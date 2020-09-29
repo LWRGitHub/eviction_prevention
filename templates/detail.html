@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{#
+    
+    Using what is passed from the route's context to fill the page
+    
+#}
+
+<main>
+
+    <div id='tools'>
+        <form action="/delete/{{plant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
+            <input type="submit" class="nav" onclick="delete_modal()" value="Delete Plant">
+        </form>
+
+        <a href='/notification.html'>
+            <img src="bell.jpg" />
+        </a>
+    </div>
+
+    <h1>{{name}}</h1>
+
+    
+
+    <div id="resume">
+        <a href='/resume.html'>
+            <h3>Resume</h3>
+
+            <img src="resume.jpg">
+        </a>
+    </div>
+
+    <div id="job_titles">
+        <a href='/job_titles.html'>
+            <h3>Job Titles</h3>
+
+            <lu>
+            {% for job in job_titles %}
+                <li>{{ job }}</li>
+            {% endfor %}
+            </lu>
+        </a>
+    </div>
+
+    <div id="jobs">
+        <a href='/jobs.html'>
+            <h3>Jobs</h3>
+        </a>
+    </div>
+
+    <div id="hiring-events">
+        <a href='/hiring_events.html'>
+            <h3>Hiring Events</h3>
+        </a>
+    </div>
+
+</main>
+
+{% endblock content %}

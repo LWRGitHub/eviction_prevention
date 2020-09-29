@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<main>
+    <h1>New Tenant</h1>
+
+    <form method='POST'>
+        <fieldset>
+            <legend>Please fill out your tenant's info:</legend>
+
+            <label>
+                Tenant's name:
+                <input type="text" name="tenant_name">
+            </label>
+            
+            <label>
+                Resume:
+                <input type="text" name="resume">
+            </label>
+
+            <label>
+                Job Titles:
+                <input type="url" name="job_titles">
+            </label>
+
+            <input type="submit" class="submit" value="Submit!">
+        </fieldset>
+    </form>
+</main>
+
+{% endblock content %}
