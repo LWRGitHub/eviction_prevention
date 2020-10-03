@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{#
+    
+    Using what is passed from the route's context to fill the page
+    
+#}
+
+<main>
+
+    <div id='tools'>
+        <form action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
+            <input type="submit" class="nav" onclick="delete_modal()" value="Delete">
+        </form>
+
+        <a href='/notification'>
+            <img src="bell.jpg" />
+        </a>
+    </div>
+
+    
+
+    
+
+</main>
+
+{% endblock content %}

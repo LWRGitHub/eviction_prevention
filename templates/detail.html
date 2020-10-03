@@ -11,11 +11,11 @@
 <main>
 
     <div id='tools'>
-        <form action="/delete/{{plant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
-            <input type="submit" class="nav" onclick="delete_modal()" value="Delete Plant">
+        <form action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
+            <input type="submit" class="nav" onclick="delete_modal()" value="Delete">
         </form>
 
-        <a href='/notification.html'>
+        <a href='/notification'>
             <img src="bell.jpg" />
         </a>
     </div>
@@ -25,7 +25,7 @@
     
 
     <div id="resume">
-        <a href='/resume.html'>
+        <a href='/resume/{{ tenant_id }}'>
             <h3>Resume</h3>
 
             <img src="resume.jpg">
@@ -33,7 +33,7 @@
     </div>
 
     <div id="job_titles">
-        <a href='/job_titles.html'>
+        <a href='/job_titles/{{ tenant_id }}'>
             <h3>Job Titles</h3>
 
             <lu>
@@ -45,13 +45,13 @@
     </div>
 
     <div id="jobs">
-        <a href='/jobs.html'>
+        <a href='/jobs/{{ tenant_id }}'>
             <h3>Jobs</h3>
         </a>
     </div>
 
     <div id="hiring-events">
-        <a href='/hiring_events.html'>
+        <a href='/hiring_events'>
             <h3>Hiring Events</h3>
         </a>
     </div>
