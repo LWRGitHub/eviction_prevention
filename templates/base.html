@@ -17,7 +17,24 @@
             <a href="/create">+ New Tenant</a>
         </div>
         
-
+        <!-- <div class="container m-3" id='tools'>
+            <div class="row">
+                <div class="col">
+    
+                    <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
+                        <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" onclick="delete_modal()" value="Delete">
+                    </form>
+                </div>
+                <div class="col">
+                    <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
+                        <img style="width: 30px;" src="/static/images/bell.png" />
+                    
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <hr /> -->
 
         {% block content %}{% endblock %}
 

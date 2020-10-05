@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col">
 
-                <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
-                    <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" onclick="delete_modal()" value="Delete">
+                <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
+                    <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" value="Delete">
                 </form>
             </div>
             <div class="col">
@@ -86,7 +86,7 @@
             <div class="col">
 
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="hiring-events">
-                    <a href='/hiring_events' class="text-dark" style="text-decoration: none;">
+                    <a href='/hiring_events/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
                         <h3>Hiring Events</h3>
                     </a>
                 </div>

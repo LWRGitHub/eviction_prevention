@@ -168,11 +168,75 @@ def jobs(tenant_id):
 
         return render_template('jobs.html', **context)
 
+@app.route('/hiring_events/<tenant_id>', methods=['GET', 'POST'])
+def hiring_events(tenant_id):
+    """Display the avalable hiring_events to pice from."""
+
+    tenant_data = mongo.db.tenants.find({})
+    tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    
+
+    if request.method == 'POST':
+
+        context = {
+            'job_titles': request.form.get('job_titles').split(',')
+        }
+
+        return redirect(url_for('hiring_events', **context))
+
+    else:
+
+        job_titles = tenant_to_show['job_titles']
+
+        events = mongo.db.hiring_events.find({})
+        print(jobs)
+
+        context = {
+            'tenants': tenant_data,
+            'tenant_id': tenant_to_show['_id'],
+            'job_titles': tenant_to_show['job_titles'],
+            'events': events
+        }
+
+        return render_template('hiring_events.html', **context)
+
+@app.route('/notification/<tenant_id>', methods=['GET', 'POST'])
+def notification(tenant_id):
+    """Display the notification to pice from."""
+
+    tenant_data = mongo.db.tenants.find({})
+    tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    
+
+    if request.method == 'POST':
+
+        context = {
+            'job_titles': request.form.get('job_titles').split(',')
+        }
+
+        return redirect(url_for('notification', **context))
+
+    else:
+
+        job_titles = tenant_to_show['job_titles']
+
+        jobs = mongo.db.jobs.find({})
+        print(jobs)
+
+        context = {
+            'tenants': tenant_data,
+            'tenant_id': tenant_to_show['_id'],
+            'job_titles': tenant_to_show['job_titles'],
+            'jobs': jobs
+        }
+
+        return render_template('notification.html', **context)
+
 @app.route('/delete/<tenant_id>', methods=['POST'])
 def delete(tenant_id):
     # `delete_one` database call to delete the tenant with the given
     # id.
-    mongo.db.tenant.delete_one({'_id': ObjectId(tenant_id)})
+    mongo.db.tenants.delete_one({'_id': ObjectId(tenant_id)})
 
     return redirect(url_for('tenant_list'))
 

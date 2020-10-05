@@ -5,7 +5,13 @@
 
 <main>
 
-   
+    <ul>
+        {% for event in events %}
+            <li>
+            <a href="{{event.url}}">{{event.name}}</a>
+            </li>
+        {% endfor %}
+    </ul>
 
 </main>
 
