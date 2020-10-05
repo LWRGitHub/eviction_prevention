@@ -112,7 +112,7 @@ def resume(tenant_id):
 
 
 @app.route('/job_titles/<tenant_id>', methods=['GET', 'POST'])
-def tenant(tenant_id):
+def job_titles(tenant_id):
     """Display the tenet creation page & process data from the creation form."""
 
     tenant_data = mongo.db.tenants.find({})
@@ -142,6 +142,7 @@ def jobs(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    
 
     if request.method == 'POST':
 
@@ -156,6 +157,7 @@ def jobs(tenant_id):
         job_titles = tenant_to_show['job_titles']
 
         jobs = mongo.db.jobs.find({})
+        print(jobs)
 
         context = {
             'tenants': tenant_data,

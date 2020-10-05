@@ -10,50 +10,89 @@
 
 <main>
 
-    <div id='tools'>
-        <form action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
-            <input type="submit" class="nav" onclick="delete_modal()" value="Delete">
-        </form>
+   
+        
 
-        <a href='/notification'>
-            <img src="bell.jpg" />
-        </a>
+    <div class="container m-3" id='tools'>
+        <div class="row">
+            <div class="col">
+
+                <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
+                    <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" onclick="delete_modal()" value="Delete">
+                </form>
+            </div>
+            <div class="col">
+                <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
+                    <img style="width: 30px;" src="/static/images/bell.png" />
+                
+                </a>
+            </div>
+        </div>
     </div>
+
+    <hr />
 
     <h1>{{name}}</h1>
 
     
+    <div class="container m-3">
+        <div class="row">
+            <div class="col">
+           
+                <div class="btn btn-outline-secondary res-job-box text-dark" >
+                    <a href='/job_titles/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
+                        <h3>Job Titles</h3>
+                        <hr />
+                        <lu>
+                        {% for job in job_titles %}
+                            <li>{{ job }}</li>
+                        {% endfor %}
+                        </lu>
+                    </a>
+                </div>
 
-    <div id="resume">
-        <a href='/resume/{{ tenant_id }}'>
-            <h3>Resume</h3>
+            </div>
+            <div class="col">
 
-            <img src="resume.jpg">
-        </a>
+                <div class="btn btn-outline-secondary res-job-box text-dark" >
+                    <a href='/resume/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
+                        <h3>Resume</h3>
+                        <hr />
+                        <img style="width:120px;" src="/static/images/resume-icon.png">
+                    </a>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div id="job_titles">
-        <a href='/job_titles/{{ tenant_id }}'>
-            <h3>Job Titles</h3>
+    <div class="container m-3">
+        <div class="row">
+            <div class="col">
 
-            <lu>
-            {% for job in job_titles %}
-                <li>{{ job }}</li>
-            {% endfor %}
-            </lu>
-        </a>
+                <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="jobs">
+                    <a href='/jobs/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
+                        <h3>Jobs</h3>
+                    </a>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div id="jobs">
-        <a href='/jobs/{{ tenant_id }}'>
-            <h3>Jobs</h3>
-        </a>
-    </div>
 
-    <div id="hiring-events">
-        <a href='/hiring_events'>
-            <h3>Hiring Events</h3>
-        </a>
+    <div class="container m-3">
+        <div class="row">
+            <div class="col">
+
+                <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="hiring-events">
+                    <a href='/hiring_events' class="text-dark" style="text-decoration: none;">
+                        <h3>Hiring Events</h3>
+                    </a>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 </main>

@@ -20,8 +20,11 @@
         </a>
     </div>
 
-    
+    {% for tenant in tenants %}
+        <a href="{{jobs.url}}">{{jobs.job_title}}</a>
+    {% endfor %}
 
+        
     
 
 </main>
