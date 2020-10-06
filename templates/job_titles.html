@@ -10,9 +10,29 @@
 
 <main>
 
-    {% for title in job_titles %}
-        <input type="text" name="{{title}}" value="{{ title }}">
-    {% endfor %}
+    <form id='form' method="POST">
+        {% for title in job_titles %}
+            <input type="text" name="job_titles" value="{{ title }}" />
+        {% endfor %}
+        <button id="plus">+</button>
+        <input type="submit" />
+        
+    </form>
+
+    <script>
+        let form = document.getElementById('form')
+        let input = document.createElement("input");  
+        let textnode = document.createTextNode(""); 
+
+        input.appendChild(textnode)
+
+        document.getElementById('plus').addEventListener('onclick', (e) => {
+            console.log(e)
+            
+            form.appendChild(input);
+            e.preventDefault()
+        })
+    </script>
 
 </main>
 

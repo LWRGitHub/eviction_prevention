@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
+
 ############################################################
 # SETUP
 ############################################################
@@ -120,11 +121,19 @@ def job_titles(tenant_id):
 
     if request.method == 'POST':
 
-        context = {
-            'job_titles': request.form.get('job_titles').split(',')
+        job_titles = list(request.form.getlist('job_titles'))
+
+        tenant = {
+            'name' : tenant_to_show['name'],
+            'resume' : tenant_to_show['resume'],
+            'job_titles': job_titles
         }
 
-        return redirect(url_for('detail', **context))
+        mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
+
+        print(job_titles)
+
+        return redirect(url_for('detail',tenant_id = tenant_id))
 
     else:
 
