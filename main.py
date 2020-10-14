@@ -94,11 +94,9 @@ def create():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-
-        return redirect(url_for('detail', tenant_id=results_id))
-
+            return redirect(url_for('detail',
+                                    filename=filename, 
+                                    tenant_id=results_id))
     else:
 
         context = {
