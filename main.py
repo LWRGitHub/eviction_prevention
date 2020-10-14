@@ -11,7 +11,7 @@ from bson.objectid import ObjectId
 ############################################################
 
 # File upload
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = '/saved_files/'
 ALLOWED_EXTENSIONS = {'docx', 'pdf', 'txt', 'doc', 'docm', 'odt', 'rtf', 'epub', 'zip'}
 
 app = Flask(__name__)
@@ -93,6 +93,9 @@ def create():
             return redirect(url_for('detail', tenant_id=results_id))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            print('-------------------')
+            print(filename)
+            print('-------------------')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('detail',
                                     filename=filename, 
@@ -121,7 +124,7 @@ def detail(tenant_id):
     tenant_data = mongo.db.tenants.find({})
 
     print("----------------------")
-    print(tenant_to_show)
+    print(tenant_to_show, 'here')
     print("----------------------")
 
     context = {
