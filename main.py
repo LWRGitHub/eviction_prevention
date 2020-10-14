@@ -1,20 +1,35 @@
-from flask import Flask, request, redirect, render_template, url_for
+import os
+from werkzeug.utils import secure_filename
+from flask import Flask, flash, request, redirect, render_template, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+
 
 
 ############################################################
 # SETUP
 ############################################################
 
+# File upload
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'docx', 'pdf', 'txt', 'doc', 'docm', 'odt', 'rtf', 'epub', 'zip'}
+
 app = Flask(__name__)
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/eviction_provention"
 mongo = PyMongo(app)
 
+# Config File Upload
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 ############################################################
 # ROUTES
 ############################################################
+
+# file Upload func
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def tenant_list():
@@ -24,14 +39,23 @@ def tenant_list():
     # tenats from the Mongo database's `tenats` collection.
     tenant_data = mongo.db.tenants.find({})
 
-    # print(list(tenant_data))
+    print("----------------------")
+    print(tenant_data.count())
+    print("----------------------")
 
-    tenant_id = tenant_data[0]['_id']
+    if tenant_data.count() != 0:
+        tenant_id = tenant_data[0]['_id']
 
-    context = {
-        'tenants': tenant_data,
-        'tenant_id': tenant_id
-    }
+        context = {
+            'tenants': tenant_data,
+            'tenant_id': tenant_id
+        }
+    else:
+        context = {
+            'tenants': '',
+            'tenant_id': ''
+        }
+
     return render_template('detail.html', **context)
 
 @app.route('/create', methods=['GET', 'POST'])
@@ -56,6 +80,23 @@ def create():
         results = mongo.db.tenants.insert_one(new_tenant)
         results_id = results.inserted_id 
 
+        ### File Upload ###
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(url_for('detail', tenant_id=results_id))
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(url_for('detail', tenant_id=results_id))
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+
         return redirect(url_for('detail', tenant_id=results_id))
 
     else:
@@ -72,6 +113,7 @@ def detail(tenant_id):
 
     # Database call to retrieve *one*
     # tenant from the database, whose id matches the id passed in via the URL.
+    print("----------------------")
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
     
     # `find` database operation to find all jobs for the
@@ -80,7 +122,9 @@ def detail(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
 
-    # print(tenant_to_show)
+    print("----------------------")
+    print(tenant_to_show)
+    print("----------------------")
 
     context = {
         'tenant' : tenant_to_show['name'],
@@ -241,6 +285,9 @@ def notification(tenant_id):
 
         return render_template('notification.html', **context)
 
+
+
+# Delet 
 @app.route('/delete/<tenant_id>', methods=['POST'])
 def delete(tenant_id):
     # `delete_one` database call to delete the tenant with the given

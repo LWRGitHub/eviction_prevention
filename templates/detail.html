@@ -10,34 +10,12 @@
 
 <main>
 
-   
-        
-
-    <div class="container m-3" id='tools'>
-        <div class="row">
-            <div class="col">
-
-                <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
-                    <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" value="Delete">
-                </form>
-            </div>
-            <div class="col">
-                <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
-                    <img style="width: 30px;" src="/static/images/bell.png" />
-                
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <hr />
-
-    <h1>{{name}}</h1>
+    <h1 class="text-center">{{tenant}}</h1>
 
     
-    <div class="container m-3">
-        <div class="row">
-            <div class="col">
+    <div class="container m-3 ">
+        <div class="row justify-content-center">
+            <div class="col-auto">
            
                 <div class="btn btn-outline-secondary res-job-box text-dark" >
                     <a href='/job_titles/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
@@ -52,7 +30,7 @@
                 </div>
 
             </div>
-            <div class="col">
+            <div class="col-auto">
 
                 <div class="btn btn-outline-secondary res-job-box text-dark" >
                     <a href='/resume/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
@@ -67,8 +45,8 @@
     </div>
 
     <div class="container m-3">
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-center">
+            <div class="col mx-4">
 
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="jobs">
                     <a href='/jobs/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
@@ -82,8 +60,8 @@
 
 
     <div class="container m-3">
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-center">
+            <div class="col mx-4">
 
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="hiring-events">
                     <a href='/hiring_events/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">

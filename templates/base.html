@@ -8,24 +8,31 @@
     </head>
     <body>
 
-        <div class="sidenav">
-
+        <div id="mySidenav" class="sidenav">
+            <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+            <h2 class="text-white-50 text-center m-3" >Profiles</h2>
+            <hr class="border-light mx-3 my-0 p-0" />
         {% for tenant in tenants %}
-            <a href="/tenant/{{tenant._id}}">{{tenant.name}}</a>
+            <a class="p-3 m-0" href="/tenant/{{tenant._id}}">{{tenant.name}}</a>
+            <hr class="border-light mx-3 my-0 p-0" />
         {% endfor %}
 
-            <a href="/create">+ New Tenant</a>
+            <a id="addNew" class="p-1 btn btn-outline-light m-3" href="/create">+Add New</a>
         </div>
         
-        <!-- <div class="container m-3" id='tools'>
-            <div class="row">
-                <div class="col">
+        <div class="container m-3" id='tools'>
+
+            <!-- nav -->
+            <span id="profilesOpen" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Profiles</span>
+
+            <div class="row justify-content-center">
+                <div class="col-auto">
     
-                    <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" onsubmit="return confirm_delete()">
-                        <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" onclick="delete_modal()" value="Delete">
+                    <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
+                        <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" value="Delete">
                     </form>
                 </div>
-                <div class="col">
+                <div class="col-auto">
                     <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
                         <img style="width: 30px;" src="/static/images/bell.png" />
                     
@@ -34,13 +41,35 @@
             </div>
         </div>
     
-        <hr /> -->
+        <hr class="mx-3" />
 
         {% block content %}{% endblock %}
 
-
-        
-
         <script src="/static/index.js"></script>
+
+        <!-- Nav -->
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "191px";
+
+                // add close
+                const node = document.createElement("A");                 
+                const textnode = document.createTextNode("x");         
+                node.appendChild(textnode); 
+                node.href = "javascript:void(0)";
+                node.className = "closebtn text-decoration-none";
+                node.onclick = function closeNav() {
+                    document.getElementById("mySidenav").style.width = "0";
+                    document.querySelector(".closebtn").remove();
+                }               
+                document.getElementById("mySidenav").appendChild(node);
+
+            }
+            
+            // function closeNav() {
+            //   document.getElementById("mySidenav").style.width = "0";
+            // }
+        </script>
+
     </body>
 </html>

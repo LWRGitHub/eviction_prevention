@@ -5,7 +5,8 @@
 <main>
     <h1>New Tenant</h1>
 
-    <form method='POST'>
+    <!-- File upload added (enctype=multipart/form-data) -->
+    <form method='POST' enctype=multipart/form-data>
         <fieldset>
             <legend>Please fill out your tenant's info:</legend>
 
@@ -13,10 +14,10 @@
                 Tenant's name:
                 <input type="text" name="tenant_name">
             </label>
-            
-            <label>
-                Resume:
-                <input type="text" name="resume">
+            <!-- File Upload info from "https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/" did not have submit button -->
+            <label>Upload Resume:
+                <input type=file name=file>
+                <input type=submit value=Upload>
             </label>
 
             <label>
