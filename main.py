@@ -123,6 +123,8 @@ def detail(tenant_id):
     # jobs = list(mongo.db.tenatns.find({'tenat_id':tenant_id}))
 
     tenant_data = mongo.db.tenants.find({})
+    jobs = mongo.db.jobs.find({})
+    events = mongo.db.hiring_events.find({})
 
     print("----------------------")
     print(tenant_to_show, 'here')
@@ -133,7 +135,11 @@ def detail(tenant_id):
         'resume' : tenant_to_show['resume'],
         'job_titles' : tenant_to_show['job_titles'],
         'tenants': tenant_data,
-        'tenant_id': tenant_to_show['_id']
+        'tenant_id': tenant_to_show['_id'],
+        'num_jobs': jobs.count(),
+        'num_events': events.count(),
+        'jobs': jobs,
+        'events': events
     }
     return render_template('detail.html', **context)
 
@@ -213,8 +219,9 @@ def jobs(tenant_id):
         job_titles = tenant_to_show['job_titles']
 
         jobs = mongo.db.jobs.find({})
-        print(jobs)
-
+        print("----------------------")
+        print(jobs, '"jobs.html"')
+        print("----------------------")
         context = {
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
