@@ -1,7 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- div created in base.html ***Includes profile menu button*** -->
+    <div class="row justify-content-center">
+        <div class="col-auto">
 
+            <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
+                <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" value="Delete">
+            </form>
+        </div>
+        <div class="col-auto">
+            <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
+                <img style="width: 30px;" src="/static/images/bell.png" />
+            
+            </a>
+        </div>
+    </div>
+</div>
 
 <main>
 

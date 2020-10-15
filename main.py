@@ -11,7 +11,7 @@ from bson.objectid import ObjectId
 ############################################################
 
 # File upload
-UPLOAD_FOLDER = '/saved_files/'
+UPLOAD_FOLDER = 'static/resumes/'
 ALLOWED_EXTENSIONS = {'docx', 'pdf', 'txt', 'doc', 'docm', 'odt', 'rtf', 'epub', 'zip'}
 
 app = Flask(__name__)
@@ -68,18 +68,6 @@ def create():
         #New tenant's name, resume, Job Titles
         # stored in the object below.
 
-        new_tenant = {
-            'name': request.form.get('tenant_name'),
-            'resume': request.form.get('resume'),
-            'job_titles': request.form.get('job_titles').split(',')
-        }
-        # `insert_one` database call to insert the object into the
-        # database's `tenant` collection, and get its inserted id. Passes the 
-        # inserted id into the redirect call below.
-
-        results = mongo.db.tenants.insert_one(new_tenant)
-        results_id = results.inserted_id 
-
         ### File Upload ###
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -97,6 +85,19 @@ def create():
             print(filename)
             print('-------------------')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            new_tenant = {
+                'name': request.form.get('tenant_name'),
+                'resume': '/static/resumes/' + filename,
+                'job_titles': request.form.get('job_titles').split(',')
+            }
+            # `insert_one` database call to insert the object into the
+            # database's `tenant` collection, and get its inserted id. Passes the 
+            # inserted id into the redirect call below.
+
+            results = mongo.db.tenants.insert_one(new_tenant)
+            results_id = results.inserted_id 
+
             return redirect(url_for('detail',
                                     filename=filename, 
                                     tenant_id=results_id))

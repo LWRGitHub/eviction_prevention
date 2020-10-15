@@ -2,6 +2,39 @@
   position: absolute;
 }
 
+.res-job-box a{
+  text-decoration: none;
+  color: black;
+}
+
+.res-job-box{
+  border: solid 1px;
+  border-radius: 5px;
+  width:200px;
+  padding: 5px;
+  list-style-type: none;
+  text-align: center;
+}
+
+.jobs-hiring-box{
+  border: solid 1px;
+  border-radius: 5px;
+  width:100%;
+  padding: 5px;
+  list-style-type: none;
+  text-align: center;
+}
+
+
+/* ---------- Titles pg ---------- */
+#titles-delete-btn{
+  margin-bottom: 4px;
+  margin-left: 0;
+  padding: 0 7px 0 7px;
+}
+/* ---------- /Titles pg ---------- */
+
+
 /*---------- side nav ----------*/
 body {
   font-family: "Lato", sans-serif;
@@ -40,55 +73,56 @@ body {
   font-size: 36px;
   margin-left: 50px;
 }
+/*---------- /side nav ----------*/
 
-/* main {
-  margin-left: 191px; 
-  font-size: 28px; 
-  padding: 0px 10px;
-} */
 
-  /*---------- /side nav ----------*/
+/* ---------- info icon ----------- */
+#myBtn{
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 23px;
+}
 
-  /* #resume{
-    border: solid 1px;
-    border-radius: 5px;
-    width:128px;
-    padding: 5px;
-  } */
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
-  .res-job-box a{
-    text-decoration: none;
-    color: black;
-  }
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
 
-  /* #resume h3{
-    margin-top: 5px;
-    
-  } */
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-  .res-job-box{
-    border: solid 1px;
-    border-radius: 5px;
-    width:200px;
-    padding: 5px;
-    list-style-type: none;
-    text-align: center;
-  }
-
-  .jobs-hiring-box{
-    border: solid 1px;
-    border-radius: 5px;
-    width:100%;
-    padding: 5px;
-    list-style-type: none;
-    text-align: center;
-  }
-
-  /* #job_titles a{
-    text-decoration: none;
-    color: black;
-  } */ 
-
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* ---------- /info icon ----------- */
 
 
   /*---------- Calender ----------*/

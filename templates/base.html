@@ -25,7 +25,21 @@
             <!-- nav -->
             <span id="profilesOpen" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Profiles</span>
 
-            <div class="row justify-content-center">
+            <!---------- info icon ---------->
+            <span id="myBtn">&#9432;</span>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>{{pg_info}}</p>
+                </div>
+            </div>
+            <!---------- /info icon ---------->
+
+            <!-- div is contiued in all other files because delet & other buttons needs to be specialized for some pg's -->
+
+            <!-- <div class="row justify-content-center">
                 <div class="col-auto">
     
                     <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
@@ -41,11 +55,11 @@
             </div>
         </div>
     
-        <hr class="mx-3" />
+        <hr class="mx-3" /> -->
 
         {% block content %}{% endblock %}
 
-        <script src="/static/index.js"></script>
+        <script src="/static/main.js"></script>
 
         <!-- Nav -->
         <script>
