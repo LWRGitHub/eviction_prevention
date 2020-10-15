@@ -184,6 +184,7 @@ def job_titles(tenant_id):
     else:
 
         context = {
+            'name' : tenant_to_show['name'],
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles']
