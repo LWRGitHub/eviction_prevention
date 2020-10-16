@@ -23,20 +23,27 @@
 
 <main>
 
-    <div class="m-3 ">
+    <div class="m-3 pt-5">
         {% for job in jobs %}
         <div class="row justify-content-center">
-            <div class="col-auto">
-                <h2><a href="{{job.url}}">{{job.job_title}}</a></h2>
+            <div class="col-auto text-left" style="width:35%;">
+                <h2><a href="{{job.url}}">{{ job.job_title |truncate(25, False, '...', 0) }}</a></h2>
                 
                 <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
             </div>
-            <div class="col-auto">
-
-                
-
-            </div>
+            <div class="col-auto text-left d-flex align-items-center">
+                <div class="vl"></div>
+                {% if job.apply %}
+                    <a href="#" class="badge badge-warning mr-2">Apply</a>
+                    <i class="icon-file-text" id='cover'></i>
+                {% else %}
+                    <span class="badge badge-pill badge-success mr-2">Alpplied</span>
+                    <i class="icon-calendar mr-2"></i>
+                    <i class="icon-file-text"></i>
+                {% endif %}
+            </div >
         </div>
+        <hr class="mx-5" />
         {% endfor %}
     </div>
 

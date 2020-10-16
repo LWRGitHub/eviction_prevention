@@ -39,6 +39,18 @@ input[type="file"] {
 /* ---------- /Resume PG ---------- */
 
 
+/* ---------- jobs ---------- */
+.vl {
+  border-left: 1px solid #4A4A4A;
+  height: 100%;
+  padding-left: 20px;
+}
+#cover{
+  margin-right: 43px;
+}
+/* ---------- /jobs ---------- */
+
+
 /* ---------- Titles pg ---------- */
 #titles-delete-btn{
   margin-bottom: 4px;

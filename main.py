@@ -81,9 +81,6 @@ def create():
             return redirect(url_for('detail', tenant_id=results_id))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print('-------------------')
-            print(filename)
-            print('-------------------')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             new_tenant = {
@@ -143,7 +140,7 @@ def detail(tenant_id):
     }
     return render_template('detail.html', **context)
 
-@app.route('/resume/<tenant_id>')
+@app.route('/resume/<tenant_id>', methods=['GET', 'POST'])
 def resume(tenant_id):
     """Display the resume page."""
 
@@ -159,6 +156,9 @@ def resume(tenant_id):
      ### File Upload ###
         # check if the post request has the file part
         if 'file' not in request.files:
+            print('----------------')
+            print(request.files)
+            print('----------------')
             flash('No file part')
             return redirect(url_for('resume', tenant_id=results_id))
         file = request.files['file']
@@ -169,10 +169,11 @@ def resume(tenant_id):
             return redirect(url_for('resume', tenant_id=results_id))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print('-------------------')
-            print(filename)
-            print('-------------------')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            print('----------------')
+            print('here')
+            print('----------------')
 
             new_tenant = {
                     'tenants': tenant_data,

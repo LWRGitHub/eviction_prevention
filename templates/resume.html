@@ -11,7 +11,9 @@
 
         <div class="col-auto mx-1 p-0">
             <label class="custom-file-upload icon-upload-alt btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;">
-                <input id="res-pg-input" type="file" name=file onchange="this.form.submit();"/>
+                <form method="POST">
+                    <input id="res-pg-input" type="file" name=file onchange="this.form.submit();"/>
+                </form>
             </label>
         </div>
 

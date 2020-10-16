@@ -3,20 +3,16 @@
 <!-- div created in base.html ***Includes profile menu button*** -->
     <div class="row justify-content-center">
         <div class="col-auto mx-1 p-0">
-
-            <button onclick="reloadFunc()" value="&#128465;"></button>
-
-            <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
-                <input type="submit" class="icon-trash nav btn btn-outline-secondary m-0 px-1 py-0 text-dark" style="font-size: 31px;" value="&#128465;">
-            </form>
+            <button onclick="reloadFunc()" class="nav btn btn-outline-secondary m-0 px-1 py-0 text-dark" style="font-size: 31px;">&#128465;</button>
         </div>
 
-        <div class="col-auto mx-1 p-0">
+        <!-- <div class="col-auto mx-1 p-0">
             <a class="icon-bell btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href='/notification/{{ tenant_id }}'></a>
-        </div>
+        </div> -->
         
         <div class="col-auto mx-1 p-0">
-            <span class="icon-save btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></span>
+            <button class="icon-save btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" type="submit" form="my-form"></button>
+            <!-- <span class="icon-save btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></span> -->
         </div>
     </div>
 </div>
@@ -26,7 +22,7 @@
 <main>
 
     <!-- File upload added (enctype=multipart/form-data) -->
-    <form method='POST' enctype=multipart/form-data>
+    <form id="my-form" method='POST' enctype=multipart/form-data>
         <fieldset class="text-center">
 
             <div class="text-center" >
@@ -56,8 +52,6 @@
                     </div>
                 </div>
             </div>
-
-            <input type="submit" class="submit" value="Submit!">
         </fieldset>
     </form>
 </main>
