@@ -23,12 +23,25 @@
 
 <main>
 
+    <div class="m-3 ">
+        {% for job in jobs %}
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h2><a href="{{job.url}}">{{job.job_title}}</a></h2>
+                
+                <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
+            </div>
+            <div class="col-auto">
+
+                
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
     <ul>
-    {% for job in jobs %}
-        <li>
-            <a href="{{job.url}}">{{job.job_title}}</a>
-        </li>
-    {% endfor %}
+    
     </ul>
 
         

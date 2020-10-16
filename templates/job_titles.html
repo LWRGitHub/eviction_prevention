@@ -23,20 +23,14 @@
 
     <form class="text-center" id='form' method="POST">
 
-        {# {% no_empty_str = True %} #}
-
         {% for title in job_titles %}
             <a id="titles-delete-btn" class="btn btn-outline-danger" onclick="delet({{ title }})">X</a>
             <input class="m-0" type="text" name="job_titles" value="{{ title }}" />
             <br />
-            {# {% if title == "" %}
-                 {% no_empty_str = False}
-            {% endif %} #}
         {% endfor %}
 
-        {#  {% if no_empty_str %}
             <input class="m-0" type="text" name="job_titles" value="" />
-        {% endif %}  #}
+
         
         <!-- <button id="plus">+</button>
         <input type="submit" /> -->

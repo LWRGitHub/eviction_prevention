@@ -4,6 +4,8 @@
     <div class="row justify-content-center">
         <div class="col-auto mx-1 p-0">
 
+            <button onclick="reloadFunc()" value="&#128465;"></button>
+
             <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
                 <input type="submit" class="icon-trash nav btn btn-outline-secondary m-0 px-1 py-0 text-dark" style="font-size: 31px;" value="&#128465;">
             </form>
@@ -22,27 +24,38 @@
 <hr class="mx-3" />
 
 <main>
-    <h1>New Profile</h1>
 
     <!-- File upload added (enctype=multipart/form-data) -->
     <form method='POST' enctype=multipart/form-data>
-        <fieldset>
-            <legend>Please fill the profile info:</legend>
+        <fieldset class="text-center">
 
-            <label>
-                Tenant's name:
-                <input type="text" name="tenant_name">
-            </label>
-            <!-- File Upload info from "https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/"  -->
-            <label>Upload Resume:
-                <input type=file name=file>
-                <input type=submit value=Upload>
-            </label>
+            <div class="text-center" >
+                <input type="text" name="tenant_name" placeholder="Enter Full Name">
+            </div>
 
-            <label>
-                Job Titles:
-                <input type="text" name="job_titles">
-            </label>
+            <div class="m-3 ">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                   
+                        <label>
+                            Job Titles:
+                            <hr />
+                            <input type="text" name="job_titles">
+                        </label>
+
+                    </div>
+                    <div class="col-auto text-center">
+
+                        <!-- File Upload info from "https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/"  -->
+                        Upload Resume:
+                        <hr />
+                        <label class="custom-file-upload icon-upload-alt">
+                            <input type=file name=file>
+                        </label>
+                        
+                    </div>
+                </div>
+            </div>
 
             <input type="submit" class="submit" value="Submit!">
         </fieldset>

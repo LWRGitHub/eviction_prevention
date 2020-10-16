@@ -18,6 +18,18 @@ function openNav() {
 // ---------- /Nav ----------- 
 
 
+// ---------- Create PG ----------
+const reloadFunc = () => {
+  location.reload();
+}
+// ---------- /Create PG ----------
+
+// let upload = document.getElementById("res-pg-input")
+
+// upload.onclick = function() {
+
+// }
+
 // ---------- info icon ----------
 // Get the modal
 let modal = document.getElementById("myModal");

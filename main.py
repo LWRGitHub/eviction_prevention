@@ -155,13 +155,50 @@ def resume(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
 
-    context = {
-        'resume' : tenant_to_show['resume'],
-        'tenants': tenant_data,
-        'tenant_id': tenant_to_show['_id']
-    }
+    if request.method == 'POST':
+     ### File Upload ###
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(url_for('resume', tenant_id=results_id))
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(url_for('resume', tenant_id=results_id))
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            print('-------------------')
+            print(filename)
+            print('-------------------')
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-    return render_template('resume.html', **context)
+            new_tenant = {
+                    'tenants': tenant_data,
+                    'name': request.form.get('tenant_name'),
+                    'resume': '/static/resumes/' + filename,
+                    'tenant_id': tenant_to_show['_id']
+            }
+            # `insert_one` database call to insert the object into the
+            # database's `tenant` collection, and get its inserted id. Passes the 
+            # inserted id into the redirect call below.
+
+            results = mongo.db.tenants.insert_one(new_tenant)
+            results_id = results.inserted_id 
+
+            return redirect(url_for('resume',
+                                    filename=filename, 
+                                    tenant_id=results_id))
+    else:
+
+        context = {
+            'resume' : tenant_to_show['resume'],
+            'tenants': tenant_data,
+            'tenant_id': tenant_to_show['_id']
+        }
+
+        return render_template('resume.html', **context)
 
 
 @app.route('/job_titles/<tenant_id>', methods=['GET', 'POST'])
@@ -219,9 +256,17 @@ def jobs(tenant_id):
         job_titles = tenant_to_show['job_titles']
 
         jobs = mongo.db.jobs.find({})
-        print("----------------------")
-        print(jobs, '"jobs.html"')
-        print("----------------------")
+        
+        # small_description = ""
+        # num = 0
+        # for job in jobs:
+        #     for l in job.description:
+        #         if num > 20:
+        #             break
+        #         else:
+        #             small_description += l
+
+
         context = {
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],

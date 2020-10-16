@@ -70,13 +70,21 @@
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="jobs">
                     <a href='/jobs/{{ tenant_id }}' class="text-dark" style="text-decoration: none;text-align: left;">
                         <h3><u>Jobs</u>  {{ num_jobs }}</h3>
-                        <ul > 
+                        <ul class="mb-0"> 
                             {% for job in jobs %}
-                                <li style="text-align: left;">
-                                    <span class="badge badge-warning">Aply</span> 
-                                    {{job.job_title}}
-                                </li>
+                                {% if job.apply %}
+                                    <li style="text-align: left;">
+                                        <span class="badge badge-pill badge-success">Aplied</span> 
+                                        {{job.job_title}}
+                                    </li>
+                                {% else %}
+                                    <li style="text-align: left;">
+                                        <span class="badge badge-warning">Aply</span> 
+                                        {{job.job_title}}
+                                    </li>
+                                {% endif %}
                             {% endfor %}
+                            <li style="list-style-type: none;">...</li>
                         </ul>
                     </a>
                 </div>
@@ -93,12 +101,13 @@
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="hiring-events">
                     <a href='/hiring_events/{{ tenant_id }}' class="text-dark" style="text-decoration: none;text-align: left;">
                         <h3><u>Hiring Events</u> {{ num_events }}</h3>
-                        <ul >
+                        <ul class="mb-0">
                             {% for event in events %}
                                 <li>
                                 {{event.name}}
                                 </li>
                             {% endfor %}
+                            <li style="list-style-type: none;">...</li>
                         </ul>
                         
                     </a>
