@@ -242,12 +242,13 @@ def jobs(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    jobs = mongo.db.jobs.find({})
     
 
     if request.method == 'POST':
 
         context = {
-            'job_titles': request.form.get('job_titles').split(',')
+            'jobs': jobs
         }
 
         return redirect(url_for('jobs', **context))
@@ -255,18 +256,6 @@ def jobs(tenant_id):
     else:
 
         job_titles = tenant_to_show['job_titles']
-
-        jobs = mongo.db.jobs.find({})
-        
-        # small_description = ""
-        # num = 0
-        # for job in jobs:
-        #     for l in job.description:
-        #         if num > 20:
-        #             break
-        #         else:
-        #             small_description += l
-
 
         context = {
             'tenants': tenant_data,

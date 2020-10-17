@@ -23,23 +23,23 @@
 
 <main>
 
-    <div class="m-3 pt-5">
+    <div class="m-3 pt-5 px-0 pb-0 m-0 ">
         {% for job in jobs %}
-        <div class="row justify-content-center">
-            <div class="col-auto text-left" style="width:35%;">
+        <div class="row justify-content-center p-0 m-0" >
+            <div class="col-auto text-left p-0 m-0" style="width:35%;">
                 <h2><a href="{{job.url}}">{{ job.job_title |truncate(25, False, '...', 0) }}</a></h2>
                 
                 <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
             </div>
-            <div class="col-auto text-left d-flex align-items-center">
+            <div class="button-div col-auto text-left d-flex align-items-center p-0 ml-2 my-0 mr-0">
                 <div class="vl"></div>
                 {% if job.apply %}
-                    <a href="#" class="badge badge-warning mr-2">Apply</a>
-                    <i class="icon-file-text" id='cover'></i>
+                    <a class="change-date-applied badge badge-pill badge-success mr-2">Alpplied</a>
+                    <a class="calendar icon-calendar mr-2 btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href="/notification/{{ tenant_id }}"></a>
+                    <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></a>
                 {% else %}
-                    <span class="badge badge-pill badge-success mr-2">Alpplied</span>
-                    <i class="icon-calendar mr-2"></i>
-                    <i class="icon-file-text"></i>
+                    <a class="change-date-applied badge badge-warning mr-2">Apply</a>
+                    <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark my-0 ml-0 py-0 px-2" style="font-size: 32px;" id='cover'></a>
                 {% endif %}
             </div >
         </div>
@@ -47,11 +47,48 @@
         {% endfor %}
     </div>
 
-    <ul>
-    
-    </ul>
 
-        
+    <script>
+        // Removes buttons & adds date input
+        let date = document.querySelectorAll('.change-date-applied');
+        let vl = document.querySelectorAll('.vl');
+        let buttonDiv = document.querySelectorAll('.button-div');
+        console.log(date);
+        for(let i = 0; i < date.length; i++){
+            date[i].onclick = function changeDate(e){
+                let nextSibling = date[i].nextElementSibling;
+                while (nextSibling){
+                    date[i].nextElementSibling.remove()
+                    nextSibling = date[i].nextElementSibling;
+                }
+                date[i].remove();
+                // Creating html tags to add/edit date applied 
+                let form = document.createElement("form");
+                let input = document.createElement("input");
+                let exitBtn = document.createElement("button");
+                let saveBtn = document.createElement("button");
+
+                // set attributes 
+                input.placeholder = "MM/DD/YY";
+                exitBtn.className = "btn btn-outline-danger mb-1 mx-0 mt-0 py-0 px-2";
+                saveBtn.className = "icon-save btn btn-outline-secondary text-dark mb-1 mx-0 mt-0 py-0 px-2";
+                form.className = `form${i}`;
+                saveBtn.setAttribute("method", "POST");
+                saveBtn.setAttribute("type", "submit");
+                saveBtn.setAttribute("form", `form${i}`);
+                exitBtn.innerHTML = "X";
+                exitBtn.style.fontSize = "19px";
+                saveBtn.style.fontSize = "19px";
+                input.style.width = "103px";
+
+                //add to pg
+                form.appendChild(exitBtn); 
+                form.appendChild(input); 
+                form.appendChild(saveBtn); 
+                buttonDiv[i].appendChild(form); 
+            }
+        }
+    </script>
     
 
 </main>
