@@ -247,6 +247,9 @@ def jobs(tenant_id):
 
     if request.method == 'POST':
 
+        date_Applied = request.form.get('date_Applied')
+        job_id = list(request.args.get('job_id'))
+
         context = {
             'jobs': jobs
         }

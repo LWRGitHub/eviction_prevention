@@ -27,6 +27,7 @@
         {% for job in jobs %}
         <div class="row justify-content-center p-0 m-0" >
             <div class="col-auto text-left p-0 m-0" style="width:35%;">
+                <span name='job_id' style="visibility: hidden;" class="m-0 p-0">{{job._id}}</span>
                 <h2><a href="{{job.url}}">{{ job.job_title |truncate(25, False, '...', 0) }}</a></h2>
                 
                 <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
@@ -76,6 +77,7 @@
                 saveBtn.setAttribute("method", "POST");
                 saveBtn.setAttribute("type", "submit");
                 saveBtn.setAttribute("form", `form${i}`);
+                input.setAttribute("name", `date_Applied`);
                 exitBtn.innerHTML = "X";
                 exitBtn.style.fontSize = "19px";
                 saveBtn.style.fontSize = "19px";
