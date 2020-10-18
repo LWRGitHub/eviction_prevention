@@ -89,8 +89,25 @@
                 form.appendChild(input); 
                 form.appendChild(saveBtn); 
                 buttonDiv[i].appendChild(form); 
+
+                // save button onclick
+                saveBtn.onclick = function saveData(){
+                    input.value.replace('/', '');
+                    input.value.replace('-', '');
+                    if(input.value.length == 6){
+                        
+                    }
+                    else{
+                        alert("Please enter a date. in this format: MM/DD/YY")
+                    }
+                }
             }
+
+
         }
+
+        
+
     </script>
     
 

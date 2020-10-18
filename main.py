@@ -63,6 +63,7 @@ def create():
     """Display the tenet creation page & process data from the creation form."""
 
     tenant_data = mongo.db.tenants.find({})
+    pg_info = "Fill in the input filds and select a file to upload. For the Job Titles area you must seperate every job title with a comma."
 
     if request.method == 'POST':
         #New tenant's name, resume, Job Titles
@@ -102,6 +103,7 @@ def create():
 
         context = {
             'tenants': tenant_data,
+            'pg_info': pg_info
         }
 
         return render_template('create.html', **context)
@@ -112,7 +114,6 @@ def detail(tenant_id):
 
     # Database call to retrieve *one*
     # tenant from the database, whose id matches the id passed in via the URL.
-    print("----------------------")
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
     
     # `find` database operation to find all jobs for the
@@ -122,10 +123,7 @@ def detail(tenant_id):
     tenant_data = mongo.db.tenants.find({})
     jobs = mongo.db.jobs.find({})
     events = mongo.db.hiring_events.find({})
-
-    print("----------------------")
-    print(tenant_to_show, 'here')
-    print("----------------------")
+    pg_info = "You are in a profile. On this page you can click on Resume, Job Titles, Jobs, Hiring Events, Notification, Delete & Save. If you click on the trash it will delte this profile. Alternatively when you press on the bell icon it will redirect you to the notifications page asocated with the profile you have open. All the rest will enter that specific area of this persons profile."
 
     context = {
         'tenant' : tenant_to_show['name'],
@@ -136,7 +134,8 @@ def detail(tenant_id):
         'num_jobs': jobs.count(),
         'num_events': events.count(),
         'jobs': jobs,
-        'events': events
+        'events': events,
+        'pg_info': pg_info
     }
     return render_template('detail.html', **context)
 
@@ -147,8 +146,8 @@ def resume(tenant_id):
     # Database call to retrieve *one*
     # tenant from the database, whose id matches the id passed in via the URL.
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
-
     tenant_data = mongo.db.tenants.find({})
+    pg_info = "This is the Resume page where you can store the users resume. click the trsh button to delete the old resume & add a new one. Feel free to download the resume if you like by clicking the download button. Upload a new resume & it will atomatically delete your old one. Press the Save button to save the curent state."
 
     if request.method == 'POST':
      ### File Upload ###
@@ -184,7 +183,8 @@ def resume(tenant_id):
         context = {
             'resume' : tenant_to_show['resume'],
             'tenants': tenant_data,
-            'tenant_id': tenant_to_show['_id']
+            'tenant_id': tenant_to_show['_id'],
+            'pg_info': pg_info
         }
 
         return render_template('resume.html', **context)
@@ -196,6 +196,7 @@ def job_titles(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    pg_info = "Here you can edit the job titles for this profile. press the red X to delte that title or type in the text field for add or edite a title. After you have it the way you want be sure to pres the save button so that you have all your date the way you want."
 
     if request.method == 'POST':
 
@@ -228,7 +229,8 @@ def job_titles(tenant_id):
             'name' : tenant_to_show['name'],
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
-            'job_titles': tenant_to_show['job_titles']
+            'job_titles': tenant_to_show['job_titles'],
+            'pg_info': pg_info
         }
 
         return render_template('job_titles.html', **context)
@@ -241,6 +243,7 @@ def jobs(tenant_id):
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
     jobs = mongo.db.jobs.find({})
     
+    pg_info = 'On this page you will find all the jobs that are avalable for the job titles you have selected. if you press "Apply" you will be able to enter the date when you applied. The file icon alows you to save a cover letter specific for that job. As you maybe able to see when you have applied to the job the "Apply" turns into "Applied" & a calender icon pops up. When you clic on the "Applied" icon you have the option to change the date you applied. The clender button will bring you to a page that will alow you to edit the alerts for that job & schedual reminders on the calender.'
 
     if request.method == 'POST':
 
@@ -248,7 +251,8 @@ def jobs(tenant_id):
         job_id = list(request.args.get('job_id'))
 
         context = {
-            'jobs': jobs
+            'jobs': jobs,
+            'pg_info': pg_info
         }
 
         return redirect(url_for('jobs', **context))
@@ -261,7 +265,8 @@ def jobs(tenant_id):
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles'],
-            'jobs': jobs
+            'jobs': jobs,
+            'pg_info': pg_info
         }
 
         return render_template('jobs.html', **context)
@@ -272,7 +277,7 @@ def hiring_events(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
-    
+    pg_info = "On this page you will find all the hiring events in your area that are associated with the job tiles chosen for this profile. You can click the links to be redirected to a site that can provide more info on the specifice event. Also to the left of the event name you will see the date & time of the event."
 
     if request.method == 'POST':
 
@@ -293,7 +298,8 @@ def hiring_events(tenant_id):
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles'],
-            'events': events
+            'events': events,
+            'pg_info': pg_info
         }
 
         return render_template('hiring_events.html', **context)
@@ -304,12 +310,14 @@ def notification(tenant_id):
 
     tenant_data = mongo.db.tenants.find({})
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
+    pg_info = "The Notifications page is where you can edit your calender alerts & the setting for emails."
     
 
     if request.method == 'POST':
 
         context = {
-            'job_titles': request.form.get('job_titles').split(',')
+            'job_titles': request.form.get('job_titles').split(','),
+            'pg_info': pg_info
         }
 
         return redirect(url_for('notification', **context))
@@ -325,7 +333,8 @@ def notification(tenant_id):
             'tenants': tenant_data,
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles'],
-            'jobs': jobs
+            'jobs': jobs,
+            'pg_info': pg_info
         }
 
         return render_template('notification.html', **context)
