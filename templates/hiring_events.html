@@ -6,10 +6,6 @@
         <div class="col-auto mx-1 p-0">
             <a class="icon-bell btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href='/notification/{{ tenant_id }}'></a>
         </div>
-
-        <div class="col-auto mx-1 p-0">
-            <span class="icon-save btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></span>
-        </div>
     </div>
 </div>
 
@@ -17,13 +13,22 @@
 
 <main>
 
-    <ul>
+    <div class="m-3 pt-5 px-0 pb-0 m-0 ">
         {% for event in events %}
-            <li>
-            <a href="{{event.url}}">{{event.name}}</a>
-            </li>
+            <div class="row justify-content-center p-0 m-0" >
+                <div class="col-auto text-left p-0 m-0" style="width:35%;">
+                    <h2><a href="{{event.url}}">{{ event.name |truncate(25, False, '...', 0) }}</a></h2>
+                    <p>{{ event.description |truncate(100, False, '...', 0) }}</p> 
+                </div>
+                <div class="button-div col-auto text-left d-flex align-items-center p-0 ml-2 my-0 mr-0">
+                    <div class="vl" ></div>
+                    <span>{{event.date}}&nbsp;&nbsp;</span>
+                    <span>&nbsp;&nbsp;{{event.time}}</span>
+                </div>
+            </div>
+            <hr class="mx-5" />
         {% endfor %}
-    </ul>
+    </div>
 
 </main>
 
