@@ -24,12 +24,16 @@
     <form class="text-center" id='form' method="POST">
 
         {% for title in job_titles %}
-            <a id="titles-delete-btn" class="btn btn-outline-danger" onclick="delet({{ title }})">X</a>
-            <input class="m-0" type="text" name="job_titles" value="{{ title }}" />
-            <br />
+            <div>
+                <a id="titles-delete-btn" class="btn btn-outline-danger mr-0">X</a>
+                <input type="text" name="job_titles" value="{{ title }}" />
+                <br />
+            </div>
         {% endfor %}
-
-            <input class="m-0" type="text" name="job_titles" value="" />
+            <div>
+                <a id="titles-delete-btn" class="btn btn-outline-danger mr-0">X</a>
+                <input type="text" name="job_titles" value=" " />
+            </div>
 
         
         <!-- <button id="plus">+</button>
@@ -38,18 +42,68 @@
     </form>
 
     <script>
-        let form = document.getElementById('form')
-        let input = document.createElement("input");  
-        let textnode = document.createTextNode(""); 
+        let form = document.getElementById('form');
 
-        input.appendChild(textnode)
+        form.addEventListener('input', (e) => {
+            form = document.getElementById('form');
+            let inputs = document.querySelectorAll('input');
+            let addNewInput = true;
+            let emptyCount = 0;
+            for(let i = 0; i < inputs.length; i++){
+                if(inputs[i].value == ''){
+                    addNewInput = false;
+                    emptyCount++
+                    if(emptyCount > 1){
+                        input[i].remove()
+                    }
+                }
+            }
+            emptyCount = 0;
 
-        document.getElementById('plus').addEventListener('onclick', (e) => {
-            console.log(e)
-            
-            form.appendChild(input);
-            e.preventDefault()
-        })
+            if(addNewInput){
+                let input = document.createElement("input"); 
+                let div = document.createElement("div"); 
+                let br = document.createElement("br"); 
+                let a = document.createElement("a"); 
+
+                input.name = "job_titles";
+                input.type = "text";
+                input.value = '';
+
+                a.id = "titles-delete-btn";
+                a.className = "btn btn-outline-danger";
+                a.innerHTML = "X";
+
+                
+                div.appendChild(a);
+                div.appendChild(input);
+                div.appendChild(br);
+
+                form.appendChild(div);
+            }
+            let titlesDeleteBtn = document.querySelectorAll('#titles-delete-btn');
+
+            for(let i = 0; i < titlesDeleteBtn.length; i++){
+                titlesDeleteBtn[i].onclick = function tagDelete(e){
+                    e.target.parentNode.remove()
+                }
+            }
+        });
+
+        let titlesDeleteBtn = document.querySelectorAll('#titles-delete-btn');
+
+        for(let i = 0; i < titlesDeleteBtn.length; i++){
+
+            console.log(titlesDeleteBtn[i]);
+
+            // let nextSibling = titlesDeleteBtn[i].nextSibling
+
+            // console.log(nextSibling);
+
+            titlesDeleteBtn[i].onclick = function tagDelete(e){
+                e.target.parentNode.remove()
+            }
+        }
     </script>
 
 </main>
