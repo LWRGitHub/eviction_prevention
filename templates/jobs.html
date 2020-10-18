@@ -27,12 +27,13 @@
         {% for job in jobs %}
         <div class="row justify-content-center p-0 m-0" >
             <div class="col-auto text-left p-0 m-0" style="width:35%;">
-                <span name='job_id' style="visibility: hidden;" class="m-0 p-0">{{job._id}}</span>
+                
                 <h2><a href="{{job.url}}">{{ job.job_title |truncate(25, False, '...', 0) }}</a></h2>
                 
                 <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
             </div>
             <div class="button-div col-auto text-left d-flex align-items-center p-0 ml-2 my-0 mr-0">
+                <span name='job_id' style="visibility: hidden; position: absolute;" class="m-0 p-0">{{job._id}}</span>
                 <div class="vl"></div>
                 {% if job.apply %}
                     <a class="change-date-applied badge badge-pill badge-success mr-2">Alpplied</a>
