@@ -212,6 +212,27 @@ def job_titles(tenant_id):
     if request.method == 'POST':
 
         job_titles = list(request.form.getlist('job_titles'))
+        # job_t_list = list(range(len(job_titles)))
+
+        empty_str = '' in job_titles
+        space_str = ' ' in job_titles
+        while(empty_str):
+            job_titles.remove('')
+            empty_str = '' in job_titles
+        while(space_str):
+            job_titles.remove(' ')
+            space_str = ' ' in job_titles
+
+        print('----------')
+        print(job_titles)
+        print('----------')
+
+        # for i in job_t_list:
+        #     print('----------')
+        #     print(i, job_titles[i])
+        #     print('----------')
+        #     if job_titles[i] == " ":
+        #         del job_titles[i]
 
         tenant = {
             'name' : tenant_to_show['name'],
