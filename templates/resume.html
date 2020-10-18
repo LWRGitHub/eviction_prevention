@@ -3,10 +3,24 @@
 
 <!-- div created in base.html ***Includes profile menu button*** -->
     <div class="row justify-content-center">
+
         <div class="col-auto mx-1 p-0">
+            <label class="custom-file-upload btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;">
+                <form method="POST" enctype=multipart/form-data> &#128465;
+                    <input id="res-pg-input" type="file" name=file onchange="this.form.submit();" />
+                </form>
+            </label>
+        </div>
+
+        <!-- <div class="col-auto mx-1 p-0">
             <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
                 <input type="submit" class="icon-trash nav btn btn-outline-secondary m-0 px-1 py-0 text-dark" style="font-size: 31px;" value="&#128465;">
             </form>
+        </div> -->
+
+        <div class="col-auto mx-1 p-0">
+            <a class="icon-download-alt btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href="{{resume}}" download></a>
+            <!-- <span class="icon-download-alt btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></span> -->
         </div>
 
         <div class="col-auto mx-1 p-0">
@@ -15,11 +29,6 @@
                     <input id="res-pg-input" type="file" name=file onchange="this.form.submit();"/>
                 </form>
             </label>
-        </div>
-
-        <div class="col-auto mx-1 p-0">
-            <a class="icon-download-alt btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href="{{resume}}" download></a>
-            <!-- <span class="icon-download-alt btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></span> -->
         </div>
 
         <div class="col-auto mx-1 p-0">

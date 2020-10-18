@@ -148,17 +148,12 @@ def resume(tenant_id):
     # tenant from the database, whose id matches the id passed in via the URL.
     tenant_to_show = mongo.db.tenants.find_one({'_id': ObjectId(tenant_id)})
 
-    print(tenant_to_show)
-
     tenant_data = mongo.db.tenants.find({})
 
     if request.method == 'POST':
      ### File Upload ###
         # check if the post request has the file part
         if 'file' not in request.files:
-            print('----------------')
-            print(request.files)
-            print('----------------')
             flash('No file part')
             return redirect(url_for('resume', tenant_id=results_id))
         file = request.files['file']
@@ -171,26 +166,19 @@ def resume(tenant_id):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            print('----------------')
-            print('here')
-            print('----------------')
-
-            new_tenant = {
-                    'tenants': tenant_data,
-                    'name': request.form.get('tenant_name'),
+            tenant = {
+                    'name': tenant_to_show['name'],
                     'resume': '/static/resumes/' + filename,
-                    'tenant_id': tenant_to_show['_id']
+                    'job_titles': tenant_to_show['job_titles']
             }
             # `insert_one` database call to insert the object into the
             # database's `tenant` collection, and get its inserted id. Passes the 
             # inserted id into the redirect call below.
 
-            results = mongo.db.tenants.insert_one(new_tenant)
-            results_id = results.inserted_id 
+            results = mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
+            # results_id = results.inserted_id 
 
-            return redirect(url_for('resume',
-                                    filename=filename, 
-                                    tenant_id=results_id))
+            return redirect(url_for('resume', tenant_id=tenant_id))
     else:
 
         context = {
@@ -212,7 +200,6 @@ def job_titles(tenant_id):
     if request.method == 'POST':
 
         job_titles = list(request.form.getlist('job_titles'))
-        # job_t_list = list(range(len(job_titles)))
 
         empty_str = '' in job_titles
         space_str = ' ' in job_titles
@@ -222,17 +209,6 @@ def job_titles(tenant_id):
         while(space_str):
             job_titles.remove(' ')
             space_str = ' ' in job_titles
-
-        print('----------')
-        print(job_titles)
-        print('----------')
-
-        # for i in job_t_list:
-        #     print('----------')
-        #     print(i, job_titles[i])
-        #     print('----------')
-        #     if job_titles[i] == " ":
-        #         del job_titles[i]
 
         tenant = {
             'name' : tenant_to_show['name'],
