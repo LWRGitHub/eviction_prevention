@@ -83,6 +83,7 @@
                 exitBtn.style.fontSize = "19px";
                 saveBtn.style.fontSize = "19px";
                 input.style.width = "103px";
+                form.setAttribute("method", `POST`);
 
                 //add to pg
                 form.appendChild(exitBtn); 
@@ -92,10 +93,21 @@
 
                 // save button onclick
                 saveBtn.onclick = function saveData(){
-                    input.value.replace('/', '');
-                    input.value.replace('-', '');
+                    input.value = input.value.replace('/', '');
+                    input.value = input.value.replace('/', '');
+                    input.value = input.value.replace('-', '');
+                    input.value = input.value.replace('-', '');
+                    console.log(input.value);
                     if(input.value.length == 6){
-                        
+                        //Todo send in POST request to the py file and add date applied to mongoDB & 
+                        //make Apply = true in py file
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "//localhost:27017/eviction_provention/jobs/<tenant_id>", true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.send(JSON.stringify({
+                            value: value
+                        }));
                     }
                     else{
                         alert("Please enter a date. in this format: MM/DD/YY")
