@@ -9,7 +9,7 @@ App made with flask, Jinja2, HTML, CSS, JS
 
 clone & install
 
-then add your self the to profiles 
+then add your self the to profiles & click around
 
 
 

@@ -354,18 +354,81 @@ def jobs(tenant_id):
         #     'name': tenant_to_show['name'],
         # }
 
+        jobs_data = []
+        for job_from_jobs in jobs:
+            job = {}
+            job['job_title'] = job_from_jobs['job_title'][0:25]
+            job['description'] = job_from_jobs['description'][0:100]
+            job['job_id'] = str(job_from_jobs['_id'])
+            job['url'] = job_from_jobs['url']
+
+            if tenant_to_show['jobs'] != []:
+                for profile_job in tenant_to_show['jobs']:
+                    has_job = False
+
+                    for job_from_jobs_2 in jobs:
+                        if str(job_from_jobs_2['_id']) == profile_job['job_id']:
+                            has_job = True
+                    
+                    if has_job:
+                        if profile_job['applied']:
+                            job['applied'] = True
+                        else:
+                            job['applied'] = False
+            else:
+                job['applied'] = False
+            
+            jobs_data.append(job)
+
+        print('---------POST-----------')
+        print(jobs_data)
+        print('--------------------')
+
         context = {
             'tenant': tenant_to_show,
             'jobs': jobs,
             'tenant_id': tenant_to_show['_id'],
-            'pg_info': pg_info
+            'pg_info': pg_info,
+            'jobs_data': jobs_data
         }
 
         return redirect(url_for('jobs', **context))
 
     else:
 
-        job_titles = tenant_to_show['job_titles']
+        jobs_data = []
+        for job_from_jobs in jobs:
+            print('--------------------')
+            print(job_from_jobs)
+            print('--------------------')
+            job = {}
+            job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
+            job['description'] = job_from_jobs['description'][0:100] + '...'
+            job['job_id'] = str(job_from_jobs['_id'])
+            job['url'] = job_from_jobs['url']
+
+            if tenant_to_show['jobs'] != []:
+                for profile_job in tenant_to_show['jobs']:
+                    has_job = False
+
+                    for job_from_jobs_2 in jobs:
+                        if str(job_from_jobs_2['_id']) == profile_job['job_id']:
+                            has_job = True
+                    
+                    if has_job:
+                        if profile_job['applied']:
+                            job['applied'] = True
+                        else:
+                            job['applied'] = False
+            else:
+                job['applied'] = False
+            
+            jobs_data.append(job)
+        
+        # print('---------GET-----------')
+        # print(jobs)
+        # print(jobs_data)
+        # print('--------------------')
 
         context = {
             'tenants': tenant_data,
@@ -373,7 +436,8 @@ def jobs(tenant_id):
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles'],
             'jobs': jobs,
-            'pg_info': pg_info
+            'pg_info': pg_info,
+            'jobs_data': jobs_data
         }
 
         return render_template('jobs.html', **context)
