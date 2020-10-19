@@ -38,25 +38,28 @@ def tenant_list():
     # database call to retrieve *all*
     # tenats from the Mongo database's `tenats` collection.
     tenant_data = mongo.db.tenants.find({})
-
-    print("----------------------")
-    print(tenant_data.count())
-    print("----------------------")
+    jobs = mongo.db.jobs.find({})
+    events = mongo.db.hiring_events.find({})
 
     if tenant_data.count() != 0:
         tenant_id = tenant_data[0]['_id']
 
         context = {
+            'tenant': tenant_data[0],
             'tenants': tenant_data,
-            'tenant_id': tenant_id
+            'tenant_id': tenant_id,
+            'jobs': jobs,
+            'events': events
         }
+        return render_template('detail.html', **context)
     else:
-        context = {
-            'tenants': '',
-            'tenant_id': ''
-        }
+        # context = {
+        #     'tenants': '',
+        #     'tenant_id': ''
+        # }
+        return render_template('create.html', **context)
 
-    return render_template('detail.html', **context)
+    
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
@@ -87,7 +90,8 @@ def create():
             new_tenant = {
                 'name': request.form.get('tenant_name'),
                 'resume': '/static/resumes/' + filename,
-                'job_titles': request.form.get('job_titles').split(',')
+                'job_titles': request.form.get('job_titles').split(','),
+                'jobs': []
             }
             # `insert_one` database call to insert the object into the
             # database's `tenant` collection, and get its inserted id. Passes the 
@@ -126,11 +130,8 @@ def detail(tenant_id):
     pg_info = "You are in a profile. On this page you can click on Resume, Job Titles, Jobs, Hiring Events, Notification, Delete & Save. If you click on the trash it will delte this profile. Alternatively when you press on the bell icon it will redirect you to the notifications page asocated with the profile you have open. All the rest will enter that specific area of this persons profile."
 
     context = {
-        'tenant' : tenant_to_show['name'],
-        'resume' : tenant_to_show['resume'],
-        'job_titles' : tenant_to_show['job_titles'],
+        'tenant' : tenant_to_show,
         'tenants': tenant_data,
-        'tenant_id': tenant_to_show['_id'],
         'num_jobs': jobs.count(),
         'num_events': events.count(),
         'jobs': jobs,
@@ -247,11 +248,116 @@ def jobs(tenant_id):
 
     if request.method == 'POST':
 
-        date_Applied = request.form.get('date_Applied')
-        job_id = list(request.args.get('job_id'))
+        # date_applied = request.form.get('date_applied')
+        req_json = request.get_json()
+        # print("-----------")
+        # print(req_json)
+        # print(req_json['job_id'])
+        # print("-----------")
+        date_applied = req_json['date_applied']
+
+        already_before = False
+        for job in tenant_to_show['jobs']:
+            if job['job_id'] == req_json['job_id']:
+                already_before = True
+
+        # print("-----------")
+        # print(date_applied)
+        # print("-----------")
+
+        if tenant_to_show['jobs'] != []:
+            if already_before:
+                for job in tenant_to_show['jobs']:
+                    if job['job_id'] == req_json['job_id']:
+                        print("-----------")
+                        print('1')
+                        print("-----------")
+
+                        job['applied'] = True
+                        job['date_applied'] = date_applied
+                        tenant = {
+                            'name': tenant_to_show['name'],
+                            'resume': tenant_to_show['resume'],
+                            'job_titles': tenant_to_show['job_titles'],
+                            'jobs': tenant_to_show['jobs'],
+                        }
+
+                        results = mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
+            else:
+                print("-----------")
+                print('2')
+                print("-----------")
+                for job in jobs:
+                    old_job_id = str(job['_id'])
+                    new_job_id = req_json['job_id']
+
+                    print("-----------")
+                    print('2: for')
+                    print(old_job_id)
+                    print(new_job_id)
+                    print(type(str(job['_id'])))
+                    print(type(req_json['job_id']))
+                    print("-----------")
+
+                    if str(job['_id']) == req_json['job_id']:
+                        print("-----------")
+                        print('2: if')
+                        print("-----------")
+                        newly_applied_job = {
+                            'job_id': req_json['job_id'],
+                            'job_title': job['job_title'],
+                            'applied': True,
+                            'date_applied': date_applied
+                        }
+                        
+                        print("-----------")
+                        print(tenant_to_show['jobs'])
+                        print("-----------")
+                        tenant_to_show['jobs'].append(newly_applied_job)
+                        print("-----------")
+                        print(tenant_to_show['jobs'])
+                        print("-----------")
+
+                        tenant = {
+                            'name': tenant_to_show['name'],
+                            'resume': tenant_to_show['resume'],
+                            'job_titles': tenant_to_show['job_titles'],
+                            'jobs': tenant_to_show['jobs'],
+                        }
+                        results = mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
+        else:
+            print("-----------")
+            print('3')
+            print("-----------")
+            for job in jobs:
+                if str(job['_id']) == req_json['job_id']:
+                    newly_applied_job = {
+                        'job_id': req_json['job_id'],
+                        'job_title': job['job_title'],
+                        'applied': True,
+                        'date_applied': date_applied
+                    }
+
+                    tenant_to_show['jobs'].append(newly_applied_job)
+
+                    tenant = {
+                        'name': tenant_to_show['name'],
+                        'resume': tenant_to_show['resume'],
+                        'job_titles': tenant_to_show['job_titles'],
+                        'jobs': tenant_to_show['jobs'],
+                    }
+                    results = mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
+
+
+
+        # tenant = {
+        #     'name': tenant_to_show['name'],
+        # }
 
         context = {
+            'tenant': tenant_to_show,
             'jobs': jobs,
+            'tenant_id': tenant_to_show['_id'],
             'pg_info': pg_info
         }
 
@@ -263,6 +369,7 @@ def jobs(tenant_id):
 
         context = {
             'tenants': tenant_data,
+            'tenant': tenant_to_show,
             'tenant_id': tenant_to_show['_id'],
             'job_titles': tenant_to_show['job_titles'],
             'jobs': jobs,

@@ -4,13 +4,13 @@
 <!-- div created in base.html ***Includes profile menu button*** -->
     <div class="row justify-content-center">
         <div class="col-auto mx-1 p-0">
-            <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
+            <form  action="/delete/{{tenant._id}}" method='POST' id="delete-form" >
                 <input type="submit" class="icon-trash nav btn btn-outline-secondary m-0 px-1 py-0 text-dark" style="font-size: 31px;" value="&#128465;">
             </form>
         </div>
         
         <div class="col-auto mx-1 p-0">
-            <a class="icon-bell btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href='/notification/{{ tenant_id }}'></a>
+            <a class="icon-bell btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href='/notification/{{ tenant._id }}'></a>
         </div>
 
         <div class="col-auto mx-1 p-0">
@@ -29,7 +29,7 @@
 
 <main>
 
-    <h1 class="text-center">{{tenant}}</h1>
+    <h1 class="text-center">{{tenant.name}}</h1>
 
     
     <div class="m-3 ">
@@ -41,7 +41,7 @@
                         <h3>Job Titles</h3>
                         <hr />
                         <lu>
-                        {% for job in job_titles %}
+                        {% for job in tenant.job_titles %}
                             <li>{{ job }}</li>
                         {% endfor %}
                         </lu>
@@ -52,7 +52,7 @@
             <div class="col-auto">
 
                 <div class="btn btn-outline-secondary res-job-box text-dark" >
-                    <a href='/resume/{{ tenant_id }}' class="text-dark" style="text-decoration: none;">
+                    <a href='/resume/{{ tenant._id }}' class="text-dark" style="text-decoration: none;">
                         <h3>Resume</h3>
                         <hr />
                         <i class="icon-file-text-alt" style="font-size: 125px;"></i>
@@ -68,22 +68,43 @@
             <div class="col mx-4">
 
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="jobs">
-                    <a href='/jobs/{{ tenant_id }}' class="text-dark" style="text-decoration: none;text-align: left;">
+                    <a href='/jobs/{{ tenant._id }}' class="text-dark" style="text-decoration: none;text-align: left;">
                         <h3><u>Jobs</u>  {{ num_jobs }}</h3>
                         <ul class="mb-0"> 
-                            {% for job in jobs %}
-                                {% if job.apply %}
+                            {% if tenant.jobs != [] %}
+                                {% for profile_job in tenant.jobs %}
+
+                                    {% for job_from_jobs in jobs %}
+                                        {% if job_from_jobs._id == profile_job.job_id %}
+                                            {% if profile_job.applied %}
+                                                <li style="text-align: left;">
+                                                    <span class="badge badge-pill badge-success">Applied</span> 
+                                                    {{profile_job.job_title}}
+                                                </li>
+                                            {% else %}
+                                                <li style="text-align: left;">
+                                                    <span class="badge badge-warning">Apply</span> 
+                                                    {{profile_job.job_title}}
+                                                </li>
+                                            {% endif %}
+                                        {% else %}
+                                            <li style="text-align: left;">
+                                                <span class="badge badge-warning">Apply</span> 
+                                                {{job_from_jobs.job_title}}
+                                            </li>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                {% endfor %}
+                            {% else %}
+                                {% for job_from_jobs in jobs %}
                                     <li style="text-align: left;">
-                                        <span class="badge badge-pill badge-success">Aplied</span> 
-                                        {{job.job_title}}
+                                        <span class="badge badge-warning">Apply</span> 
+                                        {{job_from_jobs.job_title}}
                                     </li>
-                                {% else %}
-                                    <li style="text-align: left;">
-                                        <span class="badge badge-warning">Aply</span> 
-                                        {{job.job_title}}
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
+                                {% endfor %} 
+                            {% endif %}
                             <li style="list-style-type: none;">...</li>
                         </ul>
                     </a>
@@ -99,7 +120,7 @@
             <div class="col mx-4">
 
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="hiring-events">
-                    <a href='/hiring_events/{{ tenant_id }}' class="text-dark" style="text-decoration: none;text-align: left;">
+                    <a href='/hiring_events/{{ tenant._id }}' class="text-dark" style="text-decoration: none;text-align: left;">
                         <h3><u>Hiring Events</u> {{ num_events }}</h3>
                         <ul class="mb-0">
                             {% for event in events %}

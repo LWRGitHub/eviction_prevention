@@ -24,31 +24,53 @@
 <main>
 
     <div class="m-3 pt-5 px-0 pb-0 m-0 ">
-        {% for job in jobs %}
+    {% for job_from_jobs in jobs %}
         <div class="row justify-content-center p-0 m-0" >
             <div class="col-auto text-left p-0 m-0" style="width:35%;">
-                
-                <h2><a href="{{job.url}}">{{ job.job_title |truncate(25, False, '...', 0) }}</a></h2>
-                
-                <p>{{ job.description |truncate(100, False, '...', 0) }}</p> 
+                <h2><a href="{{job_from_jobs.url}}">{{ job_from_jobs.job_title |truncate(25, False, '...', 0) }}</a></h2>
+                <p>{{ job_from_jobs.description |truncate(100, False, '...', 0) }}</p> 
             </div>
             <div class="button-div col-auto text-left d-flex align-items-center p-0 ml-2 my-0 mr-0">
-                <span name='job_id' style="visibility: hidden; position: absolute;" class="m-0 p-0">{{job._id}}</span>
+                <span name='job_id' style="visibility: hidden; position: absolute;" class="m-0 p-0">{{job_from_jobs._id}}</span>
                 <div class="vl"></div>
-                {% if job.apply %}
-                    <a class="change-date-applied badge badge-pill badge-success mr-2">Alpplied</a>
-                    <a class="calendar icon-calendar mr-2 btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href="/notification/{{ tenant_id }}"></a>
-                    <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></a>
+        {% if tenant.jobs != [] %}
+
+            {% for profile_job in tenant.jobs %} 
+                {% set has_job = False %}
+
+                {% for job_from_jobs_2 in jobs %}
+                    {% if job_from_jobs_2._id|string == profile_job.job_id %}
+                        {% set has_job = True %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if has_job %}
+                    {% if profile_job.applied %}
+                <a class="change-date-applied badge badge-pill badge-success mr-2">Alpplied</a>
+                <a class="calendar icon-calendar mr-2 btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;" href="/notification/{{ tenant_id }}"></a>
+                <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark m-0 py-0 px-2" style="font-size: 32px;"></a>
+                    {% else %}
+                <a class="change-date-applied badge badge-warning mr-2">Apply</a>
+                <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark my-0 ml-0 py-0 px-2" style="font-size: 32px;" id='cover'></a>
+                    {% endif %}
                 {% else %}
-                    <a class="change-date-applied badge badge-warning mr-2">Apply</a>
-                    <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark my-0 ml-0 py-0 px-2" style="font-size: 32px;" id='cover'></a>
+                think you have not Applied
+                <a class="change-date-applied badge badge-warning mr-2">Apply</a>
+                <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark my-0 ml-0 py-0 px-2" style="font-size: 32px;" id='cover'></a>
                 {% endif %}
+
+            {% endfor %}
+
+        {% else %}
+                Woop it = []
+                <a class="change-date-applied badge badge-warning mr-2">Apply</a>
+                <a class="cover-letter icon-file-text btn btn-outline-secondary text-dark my-0 ml-0 py-0 px-2" style="font-size: 32px;" id='cover'></a>
+        {% endif %}
             </div >
         </div>
         <hr class="mx-5" />
-        {% endfor %}
+    {% endfor %}
     </div>
-
 
     <script>
         // Removes buttons & adds date input
@@ -78,7 +100,7 @@
                 saveBtn.setAttribute("method", "POST");
                 saveBtn.setAttribute("type", "submit");
                 saveBtn.setAttribute("form", `form${i}`);
-                input.setAttribute("name", `date_Applied`);
+                input.setAttribute("name", `date_applied`);
                 exitBtn.innerHTML = "X";
                 exitBtn.style.fontSize = "19px";
                 saveBtn.style.fontSize = "19px";
@@ -97,21 +119,39 @@
                     input.value = input.value.replace('/', '');
                     input.value = input.value.replace('-', '');
                     input.value = input.value.replace('-', '');
-                    console.log(input.value);
                     if(input.value.length == 6){
                         //Todo send in POST request to the py file and add date applied to mongoDB & 
                         //make Apply = true in py file
+                        
+                        // var xhr = new XMLHttpRequest();
+                        // xhr.open("POST", "/jobs/<tenant_id>", true);
+                        // xhr.setRequestHeader('Content-Type', 'application/json');
+                        // xhr.send(JSON.stringify({
+                        //     value: value
+                        // }));
 
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "//localhost:27017/eviction_provention/jobs/<tenant_id>", true);
-                        xhr.setRequestHeader('Content-Type', 'application/json');
-                        xhr.send(JSON.stringify({
-                            value: value
-                        }));
+                        const jobId = form.parentElement.children[0].innerHTML
+
+                        let data = {job_id: jobId, date_applied: input.value};
+                        let urlId = document.URL.split('/')[document.URL.split('/').length - 1];
+
+                        fetch(`/jobs/${urlId}`, {
+                            method: "POST", 
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                                // 'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                        }).then(res => {
+                            console.log("Request complete! response:", res);
+                            location.reload()
+                        });
+                        
                     }
                     else{
                         alert("Please enter a date. in this format: MM/DD/YY")
                     }
+
                 }
             }
 
