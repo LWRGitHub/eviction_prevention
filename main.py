@@ -136,7 +136,8 @@ def detail(tenant_id):
         'num_events': events.count(),
         'jobs': jobs,
         'events': events,
-        'pg_info': pg_info
+        'pg_info': pg_info,
+        'tenant_id': tenant_to_show['_id']
     }
     return render_template('detail.html', **context)
 
@@ -215,7 +216,7 @@ def job_titles(tenant_id):
         tenant = {
             'name' : tenant_to_show['name'],
             'resume' : tenant_to_show['resume'],
-            'job_titles': job_titles
+            'job_titles': job_titles,
         }
 
         mongo.db.tenants.update_one( {'_id': ObjectId(tenant_id)}, {'$set': tenant})
@@ -226,6 +227,7 @@ def job_titles(tenant_id):
 
     else:
 
+        
         context = {
             'name' : tenant_to_show['name'],
             'tenants': tenant_data,
@@ -245,6 +247,31 @@ def jobs(tenant_id):
     jobs = mongo.db.jobs.find({})
     
     pg_info = 'On this page you will find all the jobs that are avalable for the job titles you have selected. if you press "Apply" you will be able to enter the date when you applied. The file icon alows you to save a cover letter specific for that job. As you maybe able to see when you have applied to the job the "Apply" turns into "Applied" & a calender icon pops up. When you clic on the "Applied" icon you have the option to change the date you applied. The clender button will bring you to a page that will alow you to edit the alerts for that job & schedual reminders on the calender.'
+
+    def get_jobs_data():
+        jobs_data = []
+        jobs_list = list(jobs)
+        for job_from_jobs in jobs_list:
+            job = {}
+
+            if len(job_from_jobs['job_title']) > 25:
+                job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
+            else:
+                job['job_title'] = job_from_jobs['job_title']
+            job['description'] = job_from_jobs['description'][0:100] + '...'
+            job['job_id'] = str(job_from_jobs['_id'])
+            job['url'] = job_from_jobs['url']
+            job['applied'] = False
+
+            if tenant_to_show['jobs'] != []:
+                for profile_job in tenant_to_show['jobs']:
+                    if str(job_from_jobs['_id']) == profile_job['job_id']:
+                        if profile_job['applied']:
+                            job['applied'] = True
+            
+            jobs_data.append(job)
+
+        return jobs_data
 
     if request.method == 'POST':
 
@@ -354,35 +381,7 @@ def jobs(tenant_id):
         #     'name': tenant_to_show['name'],
         # }
 
-        jobs_data = []
-        for job_from_jobs in jobs:
-            job = {}
-            job['job_title'] = job_from_jobs['job_title'][0:25]
-            job['description'] = job_from_jobs['description'][0:100]
-            job['job_id'] = str(job_from_jobs['_id'])
-            job['url'] = job_from_jobs['url']
-
-            if tenant_to_show['jobs'] != []:
-                for profile_job in tenant_to_show['jobs']:
-                    has_job = False
-
-                    for job_from_jobs_2 in jobs:
-                        if str(job_from_jobs_2['_id']) == profile_job['job_id']:
-                            has_job = True
-                    
-                    if has_job:
-                        if profile_job['applied']:
-                            job['applied'] = True
-                        else:
-                            job['applied'] = False
-            else:
-                job['applied'] = False
-            
-            jobs_data.append(job)
-
-        print('---------POST-----------')
-        print(jobs_data)
-        print('--------------------')
+        jobs_data = get_jobs_data() 
 
         context = {
             'tenant': tenant_to_show,
@@ -396,39 +395,7 @@ def jobs(tenant_id):
 
     else:
 
-        jobs_data = []
-        for job_from_jobs in jobs:
-            print('--------------------')
-            print(job_from_jobs)
-            print('--------------------')
-            job = {}
-            job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
-            job['description'] = job_from_jobs['description'][0:100] + '...'
-            job['job_id'] = str(job_from_jobs['_id'])
-            job['url'] = job_from_jobs['url']
-
-            if tenant_to_show['jobs'] != []:
-                for profile_job in tenant_to_show['jobs']:
-                    has_job = False
-
-                    for job_from_jobs_2 in jobs:
-                        if str(job_from_jobs_2['_id']) == profile_job['job_id']:
-                            has_job = True
-                    
-                    if has_job:
-                        if profile_job['applied']:
-                            job['applied'] = True
-                        else:
-                            job['applied'] = False
-            else:
-                job['applied'] = False
-            
-            jobs_data.append(job)
-        
-        # print('---------GET-----------')
-        # print(jobs)
-        # print(jobs_data)
-        # print('--------------------')
+        jobs_data = get_jobs_data()
 
         context = {
             'tenants': tenant_data,
