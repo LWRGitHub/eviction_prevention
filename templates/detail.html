@@ -70,41 +70,18 @@
                 <div class="btn btn-outline-secondary jobs-hiring-box text-dark" id="jobs">
                     <a href='/jobs/{{ tenant._id }}' class="text-dark" style="text-decoration: none;text-align: left;">
                         <h3><u>Jobs</u>  {{ num_jobs }}</h3>
-                        <ul class="mb-0"> 
-                            {% if tenant.jobs != [] %}
-                                {% for profile_job in tenant.jobs %}
 
-                                    {% for job_from_jobs in jobs %}
-                                        {% if job_from_jobs._id == profile_job.job_id %}
-                                            {% if profile_job.applied %}
-                                                <li style="text-align: left;">
-                                                    <span class="badge badge-pill badge-success">Applied</span> 
-                                                    {{profile_job.job_title}}
-                                                </li>
-                                            {% else %}
-                                                <li style="text-align: left;">
-                                                    <span class="badge badge-warning">Apply</span> 
-                                                    {{profile_job.job_title}}
-                                                </li>
-                                            {% endif %}
-                                        {% else %}
-                                            <li style="text-align: left;">
-                                                <span class="badge badge-warning">Apply</span> 
-                                                {{job_from_jobs.job_title}}
-                                            </li>
-                                        {% endif %}
-
-                                    {% endfor %}
-
-                                {% endfor %}
-                            {% else %}
-                                {% for job_from_jobs in jobs %}
-                                    <li style="text-align: left;">
-                                        <span class="badge badge-warning">Apply</span> 
-                                        {{job_from_jobs.job_title}}
-                                    </li>
-                                {% endfor %} 
-                            {% endif %}
+                        <ul class="mb-0">
+                            {% for job in jobs_data %}
+                            <li>
+                                {% if job.applied %}
+                                <span class="badge badge-pill badge-success">Applied</span> 
+                                {% else %}
+                                <span class="badge badge-warning">Apply</span> 
+                                {% endif %}
+                                <span>{{ job.job_title }}</span>
+                            </li>
+                            {% endfor %}
                             <li style="list-style-type: none;">...</li>
                         </ul>
                     </a>

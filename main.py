@@ -129,6 +129,37 @@ def detail(tenant_id):
     events = mongo.db.hiring_events.find({})
     pg_info = "You are in a profile. On this page you can click on Resume, Job Titles, Jobs, Hiring Events, Notification, Delete & Save. If you click on the trash it will delte this profile. Alternatively when you press on the bell icon it will redirect you to the notifications page asocated with the profile you have open. All the rest will enter that specific area of this persons profile."
 
+    def get_jobs_data():
+        jobs_data = []
+        jobs_list = list(jobs)
+        for job_from_jobs in jobs_list:
+            job = {}
+
+            if len(job_from_jobs['job_title']) > 25:
+                job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
+            else:
+                job['job_title'] = job_from_jobs['job_title']
+            job['description'] = job_from_jobs['description'][0:100] + '...'
+            job['job_id'] = str(job_from_jobs['_id'])
+            job['url'] = job_from_jobs['url']
+            job['applied'] = False
+
+            if tenant_to_show['jobs'] != []:
+                for profile_job in tenant_to_show['jobs']:
+                    if str(job_from_jobs['_id']) == profile_job['job_id']:
+                        if profile_job['applied']:
+                            job['applied'] = True
+            
+            jobs_data.append(job)
+
+        return jobs_data
+
+    jobs_data = get_jobs_data()
+
+    print('-----------------')
+    print(jobs_data)
+    print('-----------------')
+
     context = {
         'tenant' : tenant_to_show,
         'tenants': tenant_data,
@@ -137,7 +168,8 @@ def detail(tenant_id):
         'jobs': jobs,
         'events': events,
         'pg_info': pg_info,
-        'tenant_id': tenant_to_show['_id']
+        'tenant_id': tenant_to_show['_id'],
+        'jobs_data': jobs_data
     }
     return render_template('detail.html', **context)
 
@@ -430,7 +462,6 @@ def hiring_events(tenant_id):
         job_titles = tenant_to_show['job_titles']
 
         events = mongo.db.hiring_events.find({})
-        print(jobs)
 
         context = {
             'tenants': tenant_data,
@@ -465,7 +496,6 @@ def notification(tenant_id):
         job_titles = tenant_to_show['job_titles']
 
         jobs = mongo.db.jobs.find({})
-        print(jobs)
 
         context = {
             'tenants': tenant_data,
