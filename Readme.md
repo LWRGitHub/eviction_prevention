@@ -14,12 +14,5 @@
 ![Image of main page with profiles open](https://github.com/LWRGitHub/eviction_prevention/blob/master/static/images/Screen%20Shot%202020-10-18%20at%203.43.15%20PM.png)
 
 
-App made with flask, Jinja2, HTML, CSS, JS
-
-clone & install
-
-then add your self the to profiles & click around
-
-
 
 ![Image of main page](https://raw.githubusercontent.com/LWRGitHub/eviction_prevention/master/static/images/Screen%20Shot%202020-10-18%20at%203.43.26%20PM.png)
