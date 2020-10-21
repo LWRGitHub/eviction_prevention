@@ -156,32 +156,7 @@ def detail(tenant_id):
     events = mongo.db.hiring_events.find({})
     pg_info = "You are in a profile. On this page you can click on Resume, Job Titles, Jobs, Hiring Events, Notification, Delete & Save. If you click on the trash it will delte this profile. Alternatively when you press on the bell icon it will redirect you to the notifications page asocated with the profile you have open. All the rest will enter that specific area of this persons profile."
 
-    def get_jobs_data():
-        jobs_data = []
-        jobs_list = list(jobs)
-        for job_from_jobs in jobs_list:
-            job = {}
-
-            if len(job_from_jobs['job_title']) > 25:
-                job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
-            else:
-                job['job_title'] = job_from_jobs['job_title']
-            job['description'] = job_from_jobs['description'][0:100] + '...'
-            job['job_id'] = str(job_from_jobs['_id'])
-            job['url'] = job_from_jobs['url']
-            job['applied'] = False
-
-            if tenant_to_show['jobs'] != []:
-                for profile_job in tenant_to_show['jobs']:
-                    if str(job_from_jobs['_id']) == profile_job['job_id']:
-                        if profile_job['applied']:
-                            job['applied'] = True
-            
-            jobs_data.append(job)
-
-        return jobs_data
-
-    jobs_data = get_jobs_data()
+    jobs_data = get_jobs_data(jobs, tenant_to_show)
 
     print('-----------------')
     print(jobs_data)
@@ -307,31 +282,6 @@ def jobs(tenant_id):
     
     pg_info = 'On this page you will find all the jobs that are avalable for the job titles you have selected. if you press "Apply" you will be able to enter the date when you applied. The file icon alows you to save a cover letter specific for that job. As you maybe able to see when you have applied to the job the "Apply" turns into "Applied" & a calender icon pops up. When you clic on the "Applied" icon you have the option to change the date you applied. The clender button will bring you to a page that will alow you to edit the alerts for that job & schedual reminders on the calender.'
 
-    def get_jobs_data():
-        jobs_data = []
-        jobs_list = list(jobs)
-        for job_from_jobs in jobs_list:
-            job = {}
-
-            if len(job_from_jobs['job_title']) > 25:
-                job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
-            else:
-                job['job_title'] = job_from_jobs['job_title']
-            job['description'] = job_from_jobs['description'][0:100] + '...'
-            job['job_id'] = str(job_from_jobs['_id'])
-            job['url'] = job_from_jobs['url']
-            job['applied'] = False
-
-            if tenant_to_show['jobs'] != []:
-                for profile_job in tenant_to_show['jobs']:
-                    if str(job_from_jobs['_id']) == profile_job['job_id']:
-                        if profile_job['applied']:
-                            job['applied'] = True
-            
-            jobs_data.append(job)
-
-        return jobs_data
-
     if request.method == 'POST':
 
         # date_applied = request.form.get('date_applied')
@@ -440,7 +390,7 @@ def jobs(tenant_id):
         #     'name': tenant_to_show['name'],
         # }
 
-        jobs_data = get_jobs_data() 
+        jobs_data = get_jobs_data(jobs, tenant_to_show)
 
         context = {
             'tenant': tenant_to_show,
@@ -454,7 +404,7 @@ def jobs(tenant_id):
 
     else:
 
-        jobs_data = get_jobs_data()
+        jobs_data = get_jobs_data(jobs, tenant_to_show)
 
         context = {
             'tenants': tenant_data,

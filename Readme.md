@@ -7,9 +7,10 @@
 # How it works
 
 1. Clone repository from GitHub
-2. $ cd eviction_prevention
-3. $ Python3 main.py
-4. it should be usable now hosted locally 
+2. set up MongoDB
+3. $ cd eviction_prevention
+4. $ Python3 main.py
+5. it should be usable now hosted locally 
 
 ![Image of main page with profiles open](https://github.com/LWRGitHub/eviction_prevention/blob/master/static/images/Screen%20Shot%202020-10-18%20at%203.43.15%20PM.png)
 
