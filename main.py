@@ -23,6 +23,34 @@ mongo = PyMongo(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ############################################################
+# Functions Used 
+############################################################
+
+def get_jobs_data(jobs, tenant_to_show):
+    jobs_data = []
+    jobs_list = list(jobs)
+    for job_from_jobs in jobs_list:
+        job = {}
+
+        if len(job_from_jobs['job_title']) > 25:
+            job['job_title'] = job_from_jobs['job_title'][0:25] + "..."
+        else:
+            job['job_title'] = job_from_jobs['job_title']
+        job['description'] = job_from_jobs['description'][0:100] + '...'
+        job['job_id'] = str(job_from_jobs['_id'])
+        job['url'] = job_from_jobs['url']
+        job['applied'] = False
+
+        if tenant_to_show['jobs'] != []:
+            for profile_job in tenant_to_show['jobs']:
+                if str(job_from_jobs['_id']) == profile_job['job_id']:
+                    if profile_job['applied']:
+                        job['applied'] = True
+        
+        jobs_data.append(job)
+    return jobs_data
+
+############################################################
 # ROUTES
 ############################################################
 
@@ -43,20 +71,19 @@ def tenant_list():
 
     if tenant_data.count() != 0:
         tenant_id = tenant_data[0]['_id']
+    
+        jobs_data = get_jobs_data(jobs, tenant_data[0])
 
         context = {
             'tenant': tenant_data[0],
             'tenants': tenant_data,
             'tenant_id': tenant_id,
             'jobs': jobs,
-            'events': events
+            'events': events,
+            'jobs_data': jobs_data
         }
         return render_template('detail.html', **context)
     else:
-        # context = {
-        #     'tenants': '',
-        #     'tenant_id': ''
-        # }
         return render_template('create.html', **context)
 
     
