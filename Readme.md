@@ -6,6 +6,8 @@ App to help landlords/Holding Companies find work for their tenants instead of l
 - Javascript
 - HTML/CSS
 - Flask
+- Bootstrap
+- Google Fonts
 - [Figma](https://www.figma.com/file/nNTgwfq4jESbyJ6eM1w53t/eviction-prevention-App?node-id=2%3A5)
 
 ## Setup/Install
