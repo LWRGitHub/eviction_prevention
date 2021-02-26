@@ -16,8 +16,16 @@ App to help landlords/Holding Companies find work for their tenants instead of l
 git clone https://github.com/LWRGitHub/eviction_prevention.git
 cd eviction_prevention
 pip3 install -r requirements.txt
-python3 main.py
+python3 app.py
 ```
+
+### add the following to .env file & make up a secrt key
+
+```
+SQLALCHEMY_DATABASE_URI=sqlite:///database.db
+SECRET_KEY=Some-Seacret
+````
+
 ## Img
 
 ![Image of main page with profiles open](https://raw.githubusercontent.com/LWRGitHub/eviction_prevention/master/static/images/Screen%20Shot%202020-10-18%20at%203.43.15%20PM.png)

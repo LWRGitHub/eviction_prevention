@@ -21,7 +21,7 @@
             <h2 class="text-white-50 text-center m-3" >Profiles</h2>
             <hr class="border-light mx-3 my-0 p-0" />
         {% for tenant in tenants %}
-            <a class="p-3 m-0" href="/tenant/{{tenant._id}}">{{tenant.name}}</a>
+            <a class="p-3 m-0" href="/tenant/{{tenant.id}}">{{tenant.name}}</a>
             <hr class="border-light mx-3 my-0 p-0" />
         {% endfor %}
 
@@ -50,12 +50,12 @@
             <!-- <div class="row justify-content-center">
                 <div class="col-auto">
     
-                    <form  action="/delete/{{tenant_id}}" method='POST' id="delete-form" >
+                    <form  action="/delete/{{tenantid}}" method='POST' id="delete-form" >
                         <input type="submit" class="nav btn btn-outline-secondary m-1 px-1 text-dark" value="Delete">
                     </form>
                 </div>
                 <div class="col-auto">
-                    <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenant_id }}'>
+                    <a style="width: 40px;" class="nav btn btn-outline-secondary m-1 px-1 text-dark" href='/notification/{{ tenantid }}'>
                         <img style="width: 30px;" src="/static/images/bell.png" />
                     
                     </a>
