@@ -14,7 +14,7 @@ class TitleCategory(FormEnum):
 class Event(db.Model):
     """Grocery Store model."""
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.PickleType)
+    title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     address = db.Column(db.String(200), nullable=False)
 

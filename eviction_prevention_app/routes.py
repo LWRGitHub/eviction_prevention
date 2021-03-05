@@ -19,7 +19,7 @@ from eviction_prevention_app.forms import EventForm, JobForm, SignUpForm, LoginF
 
 #TODO switched from Mongo to SQL need to update file uploading
 # File upload
-UPLOAD_FOLDER = 'static/resumes/'
+UPLOAD_FOLDER = 'eviction_prevention_app/static/resumes/'
 ALLOWED_EXTENSIONS = {'docx', 'pdf', 'txt', 'doc', 'docm', 'odt', 'rtf', 'epub', 'zip'}
 
 # app = Flask(__name__)
@@ -148,7 +148,7 @@ def create():
             #TODO switched from Mongo to SQL need to update file uploading
             new_user = User(
                 name=request.form.get('tenant_name'),
-                resume='/static/resumes/' + filename,
+                resume='/eviction_prevention_app/static/resumes/' + filename,
                 job_titles=request.form.get('job_titles').split(','),
                 jobs=[]
             )
@@ -236,7 +236,7 @@ def resume(tenant_id):
             new_user = User(
                 name=request.form.get('tenant_name'),
                 #TODO switched from Mongo to SQL need to update file uploading
-                resume='/static/resumes/' + filename,
+                resume='/eviction_prevention_app/static/resumes/' + filename,
                 job_titles=request.form.get('job_titles').split(','),
                 jobs=[]
             )
